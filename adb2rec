@@ -1,0 +1,289 @@
+#!/bin/bash
+# 20191129 h. 19:09
+#v. 0.2 Beta
+# by Antonio "Visi@n" Broi broi.antonio@gmail.com
+#http://www.broi.it aNTbRO
+
+# Copyright (C) 2007 Free Software Foundation
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+figlet "Adb2Rec"
+cowsay -f daemon "By Visi@n"
+
+if [ -d screenshot ];
+	    	then 
+				echo "the directory  screenshot exists";
+		
+			else
+				echo "the directory  screenshot does not exists, will be created";
+				mkdir screenshot
+fi
+
+if [ -d screenrecord ];
+	    	then 
+				echo "the directory  screenrecord exists";
+		
+			else
+				echo "the directory  screenrecord does not exists, will be created";
+				mkdir screenrecord
+fi
+				
+if [ -d compressfiles ];
+	    	then 
+				echo "the directory  compressfiles exists";
+		
+			else
+				echo "the directory  compressfiles does not exists, will be created";
+				mkdir compressfiles
+fi
+			
+if [ -d hashfiles ];
+	    	then 
+				echo "the directory  hashfiles exists";
+		
+			else
+				echo "the directory  hashfiles does not exists, will be created";
+				mkdir hashfiles
+fi
+
+PS3='Please enter your choice - ctrl-c to stop screen shot or screen record : '
+options=("Install requirements" "Help" "adb connect cable" "adb connect wifi" "Screenshot" "Screenshot_up" "Screenshot_down" "Screenrecord" "Compress and Hash All"  "Quit" )
+
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Install requirements")
+
+			echo "you chose install requirements .......stand by"
+			sudo apt-get install adb figlet cowsay ruby-notify flite feh
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+
+        "Help")
+
+            echo "you chose choice 1"
+            
+			#flite -t "Connect you Target Mobile with cable"
+			echo "Connect you Target Mobile with cable"
+			terminal-notifer -message  "Connect you Target Mobile with cable"
+			
+			#flite -t "you must enable envelope type build number for 7"
+			echo "you must enable envelope type build number for 7"
+			terminal-notifer -message "you must enable envelope type build number for 7"
+			
+			#flite -t "you must put ON envelope options"
+			echo "you must put ON envelope options"
+			terminal-notifer -message "you must put ON envelope options"
+			
+			#flite -t "put Debug USB on"
+			echo "put Debug USB on"
+			terminal-notifer -message "put Debug USB on"
+            
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+            
+        "adb connect cable")
+			
+			echo "you chose Adb Connect cable ....stand by"
+			adb devices -l
+			adb tcpip 7777
+            echo "you chose choice $REPLY which is $opt"
+			echo "now disconnect the cable from mobile phone and connect the to wifi"
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+        
+        "adb connect wifi")
+		
+			echo "you chose Adb Connect wifi ....stand by"
+			echo "now connect your Mobile phone to the wifi and get the IP"
+			echo "insert the PRIVATE IP type '192.168.x.x' "
+			read ip
+			adb connect $ip:7777 
+            echo "adb connect 192.168.x.x:7777"
+            echo "now you can make screenshot or screenrecord"           
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+            
+        "Screenshot")
+
+            echo "you chose Screenshot"
+            echo "press ctrl-c to interrrupt" 
+            screenshot=$(date +%Y%m%d%H%M%S)
+
+			if [ -d screenshot/$screenshot ];
+				then 
+				echo "the directory exists";
+		
+				else
+				echo "the directory does not exists"
+				mkdir screenshot/$screenshot
+			fi
+			
+			x=1
+            while [ $x -lt 1000000000 ]
+            do
+
+				#adb shell screencap /sdcard/${x}.png
+				adb exec-out screencap -p > screenshot/$screenshot/${x}.png
+				
+				#adb shell screencap -p | sed 's|\r$||' > screenshot/$screenshot/${x}.png
+				#adb pull /sdcard/${x}.png screenshot/$screenshot/${x}.png
+				cp screenshot/$screenshot/${x}.png temp.png
+				ls screenshot/$screenshot/${x}.png
+				cp temp.png temp1.png
+				#feh temp1.png
+				#adb shell rm /sdcard/${x}.png
+				x=$[$x+1]
+				
+            done
+
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+            
+        "Screenshot_up")
+
+            echo "you chose Screenshot"
+            echo "press ctrl-c to interrrupt" 
+            screenshot=$(date +%Y%m%d%H%M%S)
+
+			if [ -d screenshot/$screenshot ];
+				then 
+				echo "the directory exists";
+		
+				else
+				echo "the directory does not exists"
+				mkdir screenshot/$screenshot
+			fi
+			
+			x=1
+            while [ $x -lt 1000000000 ]
+            do
+
+				#adb shell screencap /sdcard/${x}.png
+				adb exec-out screencap -p > screenshot/$screenshot/${x}.png
+				adb shell input touchscreen swipe 300 300 500 800
+				
+				#adb shell screencap -p | sed 's|\r$||' > screenshot/$screenshot/${x}.png
+				#adb pull /sdcard/${x}.png screenshot/$screenshot/${x}.png
+				cp screenshot/$screenshot/${x}.png temp.png
+				ls screenshot/$screenshot/${x}.png
+				cp temp.png temp1.png
+				#feh temp1.png
+				#adb shell rm /sdcard/${x}.png
+				x=$[$x+1]
+				
+            done
+
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+            
+        "Screenshot_down")
+
+            echo "you chose Screenshot"
+            echo "press ctrl-c to interrrupt" 
+            screenshot=$(date +%Y%m%d%H%M%S)
+
+			if [ -d screenshot/$screenshot ];
+				then 
+				echo "the directory exists";
+		
+				else
+				echo "the directory does not exists"
+				mkdir screenshot/$screenshot
+			fi
+			
+			x=1
+            while [ $x -lt 1000000000 ]
+            do
+
+				#adb shell screencap /sdcard/${x}.png
+				adb exec-out screencap -p > screenshot/$screenshot/${x}.png
+				adb shell input touchscreen swipe 500 800 300 300
+				#adb shell screencap -p | sed 's|\r$||' > screenshot/$screenshot/${x}.png
+				#adb pull /sdcard/${x}.png screenshot/$screenshot/${x}.png
+				cp screenshot/$screenshot/${x}.png temp.png
+				ls screenshot/$screenshot/${x}.png
+				cp temp.png temp1.png
+				#feh temp1.png
+				#adb shell rm /sdcard/${x}.png
+				x=$[$x+1]
+				
+            done
+
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+            
+        "Screenrecord")
+
+            echo "you chose Screenrecord"
+            
+            screenrecord=$(date +%Y%m%d%H%M%S)
+
+			if [ -d screenrecord/$screenrecord ];
+				then 
+				echo "the directory exists";
+		
+				else
+				echo "the directory does not exists";
+				mkdir screenrecord/$screenrecord
+			fi
+			
+			x=1
+            while [ $x -lt 1000000000 ]
+            do
+				adb shell screenrecord /sdcard/1.mp4
+				adb pull /sdcard/1.mp4 screenrecord/$screenrecord/${x}.mp4
+				ls screenrecord/$screenrecord/${x}.mp4
+				adb shell rm /sdcard/1.mp4
+				x=$[$x+1]
+            done	
+
+            echo "you chose choice $REPLY which is $opt"
+            ;;
+         "Compress and Hash All")
+			echo "you chose Hash All .....ok... keep calm and get one Italian's coffee .... stand by"
+			tar -pczf compressfiles/screenrecord.tar.gz screenrecord/
+			tar -pczf compressfiles/screenshot.tar.gz screenshot/
+
+			echo "md5"> hashfiles/hash_screenshot.txt
+			md5 compressfiles/screenshot.tar.gz >> hashfiles/hash_screenshot.txt
+
+			echo "shasum">> hashfiles/hash_screenshot.txt
+			shasum compressfiles/screenshot.tar.gz >> hashfiles/hash_screenshot.txt
+
+			echo "md5">hashfiles/hash_screenrecord.txt
+			md5 compressfiles/screenrecord.tar.gz >> hashfiles/hash_screenrecord.txt
+
+			echo "shasum">>hashfiles/hash_screenrecord.txt
+			shasum compressfiles/screenrecord.tar.gz >> hashfiles/hash_screenrecord.txt
+
+			echo "################"
+			echo "hashfiles/hash_screenrecord.txt"
+			cat hashfiles/hash_screenrecord.txt
+			echo "################"
+			echo "hashfiles/hash_screenshot.txt"
+			cat hashfiles/hash_screenshot.txt
+
+            echo "you chose choice $REPLY which is $opt"
+			;;
+		
+			
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
